@@ -1,0 +1,75 @@
+### tuto gitHub ###
+
+# /!\ Avant toute chose /!\
+
+gitHub est un système de versionning permettant de sauvegarder l'avancement d'un projet.
+Il faut donc veiller à valider les fichiers à chaque fois qu'une fonctionnalité est IMPLEMENTEE et a été TESTEE !
+
+Premièrement, il faut absolument éviter que deux personnes travaillent en même temps sur le même fichier :
+
+Lorqu'une modification est validée et est envoyée sur le serveur, git modifie la dernière version présente dans le dossier de projet en ajoutant les nouvelles modifications au fichier ! Si deux versions sont envoyées, git ne saura pas où faire les modifications et ne sera pas en mesure de prendre une décision à ce sujet, il en résultera un MERGE CONFLICT qu'il faudra dépanner manuellement (et c'est galère !).
+
+Deuxièmement, dites à votre équipe à chaque fois que vous envoyez votre modification au serveur pour que ceux-ci fassent une mise à jour de leur dossier de projet local !
+
+Troisièmement, envoyez directement les modifs au serveur lorsque vous validez ert tout se passera pour le mieux ;)
+
+# Commandes de base : 
+
+Procédure à suivre :
+
+Vous venez de terminer l'écriture de votre fonctionnalité et vous souhaitez la valider :
+
+Ouvrez un bash, rendez vous dans le dossier de projet, tapez :
+
+	git pull
+
+pour être sûr que le dossier local est à jour. (mesure de précaution)
+
+Ensuite tapez :
+
+	git status
+
+pour voir quels fichiers ont été modifiés (ceux ci s'affichent en rouge dans la console )
+
+Ensuite tapez :
+
+	git add [chemin ou nom du fichier à ajouter pour la validation]
+
+Refaites un git status si vous voulez vérifier que les fichiers ont été ajouté (ceux-ci s'affichent maintenant en vert).
+
+Une fois les fichiers désirés ajoutés, tapez :
+
+	git commit -m "[libellé de la modification]"
+
+pour valider les changements. Notez qu'il est préférable voire recommandé de donner le nom de la fonction ajouté (ex : "ajout de la fonction bidule OK"), cela sera très salutaire au cas où il faudrait revenir à une version stable du projet.
+
+Enfin, lorsque vous êtes sûrs de vous, tapez
+
+	git push
+
+pour envoyer vos modifs au serveur !
+
+# Résumé des commandes pour utilisation de base :
+
+
+git pull -> récupérer la dernière version sur le serveur
+
+git status -> voir quels fichiers ont étés modifiés, ajoutés etc.
+
+git log -> voir la liste de toutes les validations connues par git
+
+git add -> ajouter fichier pour validation
+
+git commit -> valider les fichiers
+
+git push -> envoyer les fichiers sur le serveur
+
+# Si problème :
+
+Demandez à Thomas ;)
+
+Doc supplémentaire ->
+
+https://drive.google.com/file/d/0B-LKzXc87LDzcGN1SnMyVUdmNmM/view?usp=sharing
+
+
