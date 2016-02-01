@@ -24,53 +24,98 @@ fenetre.blit(fond, (0,0))
 
 pygame.display.flip()
 
-arrowPos = 1
-menuContinue = 1
+continueGeneral = 1
 levelFinished = 0
 
 # Musique du menu : AND HIS NAME IS JOHN CENA !!
 son = pygame.mixer.music.load("JC.mp3")
 pygame.mixer.music.play()
 
-while menuContinue:
-   
-   # Limitation de la vitesse de la boucle
-   # 30 frames par seconde suffisent
-   pygame.time.Clock().tick(30)
-
-   for event in pygame.event.get():
-            
-        # Quitter
-        if event.type == QUIT:
-            menuContinue = 0
-        # Si on clique sur flèche du bas, fléche descend    
-        elif event.type == KEYDOWN and event.key == K_DOWN:
-            if arrowPos<7:
-                if levelFinished == arrowPos-1:
-                    arrowPos = 6
-                else:    
-                    arrowPos+=1
-                fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
-                fenetre.blit(fond, (0,0))
-
-        # Si on clique sur flèche du haut, flèche monte        
-        elif event.type == KEYDOWN and event.key == K_UP:
-            if arrowPos>1:
-                if arrowPos>levelFinished+1:
-                    if(arrowPos == 7):
-                        arrowPos-=1
-                    else:    
-                        arrowPos = levelFinished+1
-                else:    
-                    arrowPos-=1
-                fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
-                fenetre.blit(fond, (0,0))
-        
-        # Si on clique sur ENTER, on ouvre le niveau associé à la position actuelle
-        elif event.type == KEYDOWN and event.key == K_RETURN:
-            if arrowPos == 7:
-                menuContinue = 0
+while continueGeneral:
+    arrowPos = 1
+    menuContinue = 1
+    jeuContinue = 1
+    
+    # Boucle de menu    
+    while menuContinue:
+        optionsContinue = 1
+       
+        # Limitation de la vitesse de la boucle
+        # 30 frames par seconde suffisent
+        pygame.time.Clock().tick(30)
+    
+        for event in pygame.event.get():
                 
-        # On refresh        
-        pygame.display.flip()        
-pygame.quit()        
+            # Quitter
+            if event.type == QUIT:
+                menuContinue = 0
+                continueGeneral = 0
+            # Si on clique sur flèche du bas, fléche descend    
+            elif event.type == KEYDOWN and event.key == K_DOWN:
+                if arrowPos<7:
+                    if levelFinished == arrowPos-1:
+                        arrowPos = 6
+                    else:    
+                        arrowPos+=1
+                    fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
+                    fenetre.blit(fond, (0,0))
+    
+            # Si on clique sur flèche du haut, flèche monte        
+            elif event.type == KEYDOWN and event.key == K_UP:
+                if arrowPos>1:
+                    if arrowPos>levelFinished+1:
+                        if(arrowPos == 7):
+                            arrowPos-=1
+                        else:    
+                            arrowPos = levelFinished+1
+                    else:    
+                        arrowPos-=1
+                    fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
+                    fenetre.blit(fond, (0,0))
+            
+            # Si on clique sur ENTER, on ouvre le niveau associé à la position actuelle
+            elif event.type == KEYDOWN and event.key == K_RETURN:
+                # CHOIX = EXIT
+                if arrowPos == 7:
+                    menuContinue = 0
+                    continueGeneral = 0
+                
+                #CHOIX = OPTIONS    
+                elif arrowPos == 6:
+                    while optionsContinue:
+                        fond = pygame.image.load("options.jpg").convert()
+                        fenetre.blit(fond, (0,0))
+                        
+                        for event in pygame.event.get():
+                            if event.type == KEYDOWN and event.key == K_ESCAPE:
+                                optionsContinue = 0
+                                jeuContinue = 0
+                                fond = pygame.image.load("bgMenu6.jpg").convert()
+                                fenetre.blit(fond, (0,0))
+                        
+                        # On refresh        
+                        pygame.display.flip()        
+                else:
+                    menuContinue = 0
+                    
+            # On refresh        
+            pygame.display.flip() 
+       
+    if not continueGeneral:
+        pygame.quit()
+    else:    
+        #niveau.niveau(arrowPos) 
+    
+        perso = pygame.image.load("sprite.png").convert()
+        fenetre.blit(perso, (0,0))
+   
+        # Boucle de jeu
+        while jeuContinue:
+            for event in pygame.event.get():
+                if event.type == KEYDOWN and event.key == K_ESCAPE:
+                    jeuContinue = 0
+                    fond = pygame.image.load("bgMenu1.jpg").convert()
+                    fenetre.blit(fond, (0,0))
+                
+                # On refresh        
+                pygame.display.flip()     
