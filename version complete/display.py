@@ -2,21 +2,21 @@ import sys
 import pygame
 import os
 
-#chargement des images
-def load_image(name):
-    image = pygame.image.load(name)
-    return image
+from class_decors import *
+from constante import *
 
 #affichage global
-def display(screen, background_image, background_position, MyHero):
+def display(screen, background_image, background_position, MyHero, blocks):
     # Ajoute images a afficher (1er = fond; dernier=1er plan)
     screen.blit(background_image, background_position)
     screen.blit(MyHero.get_img(), MyHero.get_rect())
+    blocks.creation_carreau(screen)
     # Affichage
     pygame.display.flip()
     screen.blit
     # Limite le nombre d'images par seconde
     pygame.time.wait(10)
+
 
 #affichage du game over
 def display_game_over(screen, background_image, background_position):
