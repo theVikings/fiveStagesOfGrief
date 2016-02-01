@@ -27,14 +27,14 @@ pygame.display.flip()
 continueGeneral = 1
 levelFinished = 0
 
-# Musique du menu : AND HIS NAME IS JOHN CENA !!
-son = pygame.mixer.music.load("JC.mp3")
-pygame.mixer.music.play()
-
 while continueGeneral:
     arrowPos = 1
     menuContinue = 1
     jeuContinue = 1
+    
+    # Musique du menu : AND HIS NAME IS JOHN CENA !!
+    pygame.mixer.music.load("JC.mp3")
+    pygame.mixer.music.play()
     
     # Boucle de menu    
     while menuContinue:
@@ -44,14 +44,19 @@ while continueGeneral:
         # 30 frames par seconde suffisent
         pygame.time.Clock().tick(30)
     
+        # On attend les évènements
         for event in pygame.event.get():
                 
             # Quitter
             if event.type == QUIT:
                 menuContinue = 0
                 continueGeneral = 0
-            # Si on clique sur flèche du bas, fléche descend    
+                
+            # Si on clique sur flèche du bas, flèche descend    
             elif event.type == KEYDOWN and event.key == K_DOWN:
+                sonMove = pygame.mixer.Sound("soundReturn.wav")
+                sonMove.play()
+                                
                 if arrowPos<7:
                     if levelFinished == arrowPos-1:
                         arrowPos = 6
@@ -62,6 +67,9 @@ while continueGeneral:
     
             # Si on clique sur flèche du haut, flèche monte        
             elif event.type == KEYDOWN and event.key == K_UP:
+                sonMove = pygame.mixer.Sound("soundReturn.wav")
+                sonMove.play()
+                
                 if arrowPos>1:
                     if arrowPos>levelFinished+1:
                         if(arrowPos == 7):
@@ -82,12 +90,19 @@ while continueGeneral:
                 
                 #CHOIX = OPTIONS    
                 elif arrowPos == 6:
-                    while optionsContinue:
-                        fond = pygame.image.load("options.jpg").convert()
-                        fenetre.blit(fond, (0,0))
-                        
+                    fond = pygame.image.load("options.jpg").convert()
+                    fenetre.blit(fond, (0,0))
+                    
+                    sonClic = pygame.mixer.Sound("soundClick.wav")
+                    sonClic.play()
+                    
+                    while optionsContinue:                
                         for event in pygame.event.get():
+                            # CHOIX = RETOUR AU MENU
                             if event.type == KEYDOWN and event.key == K_ESCAPE:
+                                sonReturn = pygame.mixer.Sound("soundReturn.wav")
+                                sonReturn.play()
+                    
                                 optionsContinue = 0
                                 jeuContinue = 0
                                 fond = pygame.image.load("bgMenu6.jpg").convert()
@@ -108,6 +123,8 @@ while continueGeneral:
     
         perso = pygame.image.load("sprite.png").convert()
         fenetre.blit(perso, (0,0))
+        
+        pygame.mixer.music.stop()
    
         # Boucle de jeu
         while jeuContinue:
