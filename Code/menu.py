@@ -6,6 +6,9 @@ Created on Mon Feb  1 12:17:34 2016
 """
 
 import pygame
+import classes
+import display
+import class_decors
 from pygame.locals import *
 
 # Lancement
@@ -13,20 +16,17 @@ pygame.init()
 
 # Fenêtre : 1280x720 
 fenetre = pygame.display.set_mode((1280,720))
+
 # Nom
 pygame.display.set_caption('The Five Stages of Grief')
+
 #Souris non visible dans cadre
 pygame.mouse.set_visible(0)
-
-# Background : image avec flèches qui reload page avec boutons
-fond = pygame.image.load("bgMenu1.jpg").convert()
-fenetre.blit(fond, (0,0))
-
-pygame.display.flip()
 
 continueGeneral = 1
 levelFinished = 0
 
+# Menu de contrôle général
 while continueGeneral:
     arrowPos = 1
     menuContinue = 1
@@ -35,6 +35,12 @@ while continueGeneral:
     # Musique du menu : AND HIS NAME IS JOHN CENA !!
     pygame.mixer.music.load("JC.mp3")
     pygame.mixer.music.play()
+    
+    # Background : image avec flèches qui reload page avec boutons
+    fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
+    fenetre.blit(fond, (0,0))
+
+    pygame.display.flip()
     
     # Boucle de menu    
     while menuContinue:
@@ -62,6 +68,7 @@ while continueGeneral:
                         arrowPos = 6
                     else:    
                         arrowPos+=1
+                        
                     fond = pygame.image.load("bgMenu"+str(arrowPos)+".jpg").convert()
                     fenetre.blit(fond, (0,0))
     
@@ -116,23 +123,54 @@ while continueGeneral:
             # On refresh        
             pygame.display.flip() 
        
+#----------------------------------------------------------------------------------------#
+       
     if not continueGeneral:
+        # Arrêt général
         pygame.quit()
     else:    
-        #niveau.niveau(arrowPos) 
+        # ON A SELECTIONNE UN NIVEAU
     
-        perso = pygame.image.load("sprite.png").convert()
-        fenetre.blit(perso, (0,0))
-        
         pygame.mixer.music.stop()
-   
+        screen = 1
+        
+        # Launch music
+        pygame.mixer.music.load('huntingForYourDreams.mp3')
+        pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+        pygame.mixer.music.play()
+        
+        # Création du lecteur de fichier
+        my_fichier = classes.LecteurFichier("niveau"+str(arrowPos)+"-"+str(screen)+".txt")
+        
+        # Chargement du niveau
+        niveau = classes.Niveau("niveau"+str(arrowPos)+"-"+str(screen)+".txt")
+        niveau.genererTableau()
+        
+        # Déclaration des blocks + récupération des blocks à partir fichier + création blocks
+        id = niveau.structure
+        groupe_blocks_test = class_decors.Blocks_Groupe(id)
+        
+        
+        # Création perso + objets décor
+        fond = pygame.image.load("bgNiveau"+str(arrowPos)+"-"+str(screen)+".jpg").convert()
+        my_hero = classes.MyHero(200, 200, "data/char_hero/face_hero.png", "data/char_hero/latD_hero.png", "data/char_hero/latG_hero.png")
+
         # Boucle de jeu
         while jeuContinue:
             for event in pygame.event.get():
                 if event.type == KEYDOWN and event.key == K_ESCAPE:
                     jeuContinue = 0
-                    fond = pygame.image.load("bgMenu1.jpg").convert()
-                    fenetre.blit(fond, (0,0))
+                if event.type == QUIT:
+                    pygame.quit()
                 
-                # On refresh        
-                pygame.display.flip()     
+            # Mouvement des entités
+            centre = my_hero.getPositionCarreau()
+            surrondings = my_fichier.getSurrondings(centre[0],centre[1])
+            my_hero.movement(surrondings)
+        
+            # Affichage de la fenêtre
+            display.display(fenetre, fond, [0,0], my_hero, groupe_blocks_test)
+            
+        
+
+#----------------------------------------------------------------------------------------#
