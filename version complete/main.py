@@ -14,9 +14,10 @@ def game_loop():
     #declaration du personnage
     my_hero = MyHero(200, 200, "data/char_hero/face_hero.jpg", "data/char_hero/latD_hero.jpg", "data/char_hero/latG_hero.jpg")
     #declaration des blocks
-    id = [1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
-    groupe_blocks_test = Blocks_Groupe(0,height-40,id,16,1)
-# Boucle de jeu
+    id = [[3,2]]
+    groupe_blocks_test = Blocks_Groupe(id)
+
+    # Boucle de jeu
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

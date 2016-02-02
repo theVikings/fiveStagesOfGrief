@@ -10,7 +10,9 @@ def display(screen, background_image, background_position, MyHero, blocks):
     # Ajoute images a afficher (1er = fond; dernier=1er plan)
     screen.blit(background_image, background_position)
     screen.blit(MyHero.get_img(), MyHero.get_rect())
-    blocks.creation_carreau(screen)
+    for id in blocks.tableau_blocks:
+        id.block_move()
+        screen.blit(id.image, id.rect)
     # Affichage
     pygame.display.flip()
     screen.blit
