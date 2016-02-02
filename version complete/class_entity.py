@@ -2,14 +2,7 @@ import sys
 import pygame
 import os
 
-#taille de la fenetre de jeu
-width = 640
-height = 480
-# Methode permettant de charger une image et renvoyant l'objet surface associee
-def load_image(name):
-    image = pygame.image.load(name)
-    return image
-
+from constante import *
 
 #Entites (classe mere)
 class MySprite():
