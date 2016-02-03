@@ -117,6 +117,9 @@ class MySprite():
         centre = [x,y]
         return centre
 
+    def setPosition(self,x,y):
+        self.rect = pygame.Rect(x,y,constante.taille_block,constante.taille_block)
+        return self.rect
 
 # Class MyHero (personnage principal) : hérite de MySprite
 class MyHero(MySprite):
@@ -127,8 +130,7 @@ class MyHero(MySprite):
         # Gestion du mouvement
         def movement(self,surrondings):
             keys = pygame.key.get_pressed()
-
-            # Teste la touche pressée
+           # Teste la touche pressée
             if keys[pygame.K_LEFT] and self.rect.left > 0 and self.canMoveLeft(surrondings):
                 self.set_image("gauche")
                 self.rect = self.rect.move(-5, 0)
@@ -143,25 +145,29 @@ class MyHero(MySprite):
                 self.rect = self.rect.move(0, 5)
 
         def canMoveUp(self,surrondings):
-            if((surrondings[0][1]!='0' and surrondings[0][1]!='\n' and self.rect.colliderect(surrondings[0][0]) or (surrondings[4][1]!='0' and surrondings[4][1]!='\n' and self.rect.colliderect(surrondings[4][0])) or (surrondings[5][1]!='0' and surrondings[5][1]!='\n' and self.rect.colliderect(surrondings[5][0])))):
+            listeCaracSpe=['\n','0','E','D']
+            if(((surrondings[0][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[0][0]) or ((surrondings[4][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[4][0])) or ((surrondings[5][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[5][0])))):
                return False
             else:
                return True
 
         def canMoveDown(self,surrondings):
-            if((surrondings[2][1]!='0' and surrondings[2][1]!='\n' and self.rect.colliderect(surrondings[2][0]) or (surrondings[6][1]!='0' and surrondings[6][1]!='\n' and self.rect.colliderect(surrondings[6][0])) or (surrondings[7][1]!='0' and surrondings[7][1]!='\n' and self.rect.colliderect(surrondings[7][0])))):
+            listeCaracSpe=['\n','0','E','D']
+            if(((surrondings[2][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[2][0]) or ((surrondings[6][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[6][0])) or ((surrondings[7][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[7][0])))):
                return False
             else:
                return True
 
         def canMoveLeft(self,surrondings):
-            if((surrondings[1][1]!='0' and surrondings[1][1]!='\n' and self.rect.colliderect(surrondings[1][0]) or (surrondings[4][1]!='0' and surrondings[4][1]!='\n' and self.rect.colliderect(surrondings[4][0])) or (surrondings[6][1]!='0' and surrondings[6][1]!='\n' and self.rect.colliderect(surrondings[6][0])))):
+            listeCaracSpe=['\n','0','E','D']
+            if(((surrondings[1][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[1][0]) or ((surrondings[4][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[4][0])) or ((surrondings[6][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[6][0])))):
                return False
             else:
                return True
 
         def canMoveRight(self,surrondings):
-            if((surrondings[3][1]!='0' and surrondings[3][1]!='\n' and self.rect.colliderect(surrondings[3][0]) or (surrondings[5][1]!='0' and surrondings[5][1]!='\n' and self.rect.colliderect(surrondings[5][0])) or (surrondings[7][1]!='0' and surrondings[7][1]!='\n' and self.rect.colliderect(surrondings[7][0])))):
+            listeCaracSpe=['\n','0','E','D']
+            if(((surrondings[3][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[3][0]) or ((surrondings[5][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[5][0])) or ((surrondings[7][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[7][0])))):
                return False
             else:
                return True

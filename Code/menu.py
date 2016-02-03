@@ -165,7 +165,7 @@ while continueGeneral:
                 if event.type == KEYDOWN and event.key == K_ESCAPE:
                     jeuContinue = 0
                 if event.type == QUIT:
-                    pygame.quit()
+                    os._exit(1)
 
             # Mouvement des entités
             centre = my_hero.getPositionCarreau()
@@ -176,12 +176,14 @@ while continueGeneral:
                 if(numEcran+1<nombreEcran):
                     numEcran+=1
                     nomNiveau = 'niveau'+str(arrowPos)+'/'+tableauEcran[numEcran]
-                    niveau = Niveau(nomNiveau)
+                    niveau = classes.Niveau(nomNiveau)
                     niveau.genererTableau()
-                    my_fichier = LecteurFichier(nomNiveau)
+                    id = niveau.structure
+                    groupe_blocks_test = class_decors.Blocks_Groupe(id)
+                    my_fichier = classes.LecteurFichier(nomNiveau)
                     positionHero = my_fichier.retournePositionCaractere('D')
-                    my_hero.setPosition(positionHero[0],positionHero[1])
-
+                    test = my_hero.setPosition(positionHero[0],positionHero[1])
+                    
             # Affichage de la fenêtre
             display.display(fenetre, fond, [0,0], my_hero, groupe_blocks_test)
 
