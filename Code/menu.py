@@ -157,7 +157,10 @@ while continueGeneral:
         # Création perso + objets décor
         fond = pygame.image.load("bgNiveau"+str(arrowPos)+"-"+str(numEcran+1)+".jpg").convert()
         posDepart = my_fichier.retournePositionCaractere('D')
-        my_hero = classes.MyHero(posDepart[0], posDepart[1], "data/char_hero/face_hero.png", "data/char_hero/latD_hero.png", "data/char_hero/latG_hero.png")
+        #declaration hero
+        images_bank_hero_D = ["data/char_hero/d1.png","data/char_hero/d2.png","data/char_hero/d3.png","data/char_hero/d4.png","data/char_hero/d5.png"]
+        images_bank_hero_G = ["data/char_hero/g1.png","data/char_hero/g2.png","data/char_hero/g3.png","data/char_hero/g4.png","data/char_hero/g5.png"]
+        my_hero = classes.MyHero(200, 200, [images_bank_hero_G,images_bank_hero_D])
 
         # Boucle de jeu
         while jeuContinue:
