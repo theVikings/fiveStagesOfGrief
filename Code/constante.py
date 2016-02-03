@@ -3,7 +3,6 @@ import pygame
 # Méthode permettant de charger une image et renvoyant l'objet surface associé
 def load_image(name):
     image = pygame.image.load(name)
-    print(name)
     return image
 
 # Dimensions fenêtre de jeu
@@ -18,7 +17,7 @@ class Block():
     # Constructeur
     def __init__(self, pos_x, pos_y, image):
         self.image = load_image(image)
-        self.rect = pygame.Rect(pos_x, pos_y, 40, 40)
+        self.rect = pygame.Rect(pos_x, pos_y, taille_block, taille_block)
         self.speed = [0,0]
         self.move_x = 0
         self.move_y = 0
