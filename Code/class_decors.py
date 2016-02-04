@@ -1,4 +1,4 @@
-import constante
+﻿import constante
 
 # Classe représentant les blocks du terrain
 

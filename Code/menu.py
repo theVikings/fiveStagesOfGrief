@@ -166,10 +166,15 @@ while continueGeneral:
                     jeuContinue = 0
                 if event.type == QUIT:
                     os._exit(1)
-
+                if event.type == KEYDOWN and event.key == K_UP:
+                    my_hero.jump(fenetre, fond, groupe_blocks_test, surrondings, my_fichier)
             # Mouvement des entités
             centre = my_hero.getPositionCarreau()
             surrondings = my_fichier.getSurrondings(centre[0],centre[1])
+
+            if my_hero.canMoveDown(surrondings):
+                my_hero.rect = my_hero.rect.move(0, 5)
+                
             my_hero.movement(surrondings)
 
             if(my_hero.isFinDuLevel(nomNiveau)):

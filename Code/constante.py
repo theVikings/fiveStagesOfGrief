@@ -1,4 +1,4 @@
-import pygame
+﻿import pygame
 
 # Méthode permettant de charger une image et renvoyant l'objet surface associé
 def load_image(name):

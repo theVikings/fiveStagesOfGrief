@@ -1,5 +1,6 @@
-import pygame
+﻿import pygame
 import constante
+import display
 
 def load_image(name):
     image = pygame.image.load(name)
@@ -139,10 +140,6 @@ class MyHero(MySprite):
                 self.rect = self.rect.move(5, 0)
             if keys[pygame.K_UP] and self.rect.top > 0 and self.canMoveUp(surrondings):
                 self.set_image("centre")
-                self.rect = self.rect.move(0, -5)
-            if keys[pygame.K_DOWN] and self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
-                self.set_image("centre")
-                self.rect = self.rect.move(0, 5)
 
         def canMoveUp(self,surrondings):
             listeCaracSpe=['\n','0','E','D']
@@ -153,21 +150,21 @@ class MyHero(MySprite):
 
         def canMoveDown(self,surrondings):
             listeCaracSpe=['\n','0','E','D']
-            if(((surrondings[2][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[2][0]) or ((surrondings[6][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[6][0])) or ((surrondings[7][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[7][0])))):
+            if(((surrondings[2][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[2][0]))):
                return False
             else:
                return True
 
         def canMoveLeft(self,surrondings):
             listeCaracSpe=['\n','0','E','D']
-            if(((surrondings[1][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[1][0]) or ((surrondings[4][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[4][0])) or ((surrondings[6][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[6][0])))):
+            if(((surrondings[1][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[1][0]))):
                return False
             else:
                return True
 
         def canMoveRight(self,surrondings):
             listeCaracSpe=['\n','0','E','D']
-            if(((surrondings[3][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[3][0]) or ((surrondings[5][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[5][0])) or ((surrondings[7][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[7][0])))):
+            if(((surrondings[3][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[3][0]))):
                return False
             else:
                return True
@@ -178,6 +175,51 @@ class MyHero(MySprite):
             blocJoueur = my_fichier.recupererBlocPosition(position[0],position[1])
             return (blocJoueur == 'E')
 
+        def jump(self, screen, fond, blocks, surrondings, fichier):
+            L_SAUT = 60 #Longeur du saut en pixels
+            i = 1
+            rapport_saut = 8
+            y = 112/rapport_saut
+            toucheMur = 0
+    
+            while i < L_SAUT*2 + 1 and not toucheMur:   
+                if i <= L_SAUT:
+                    if self.rect.top > 0 and self.canMoveUp(surrondings):
+                        self.rect = self.rect.move(0, -y)
+                    else :
+                        self.rect = self.rect.move(0, y)
+                elif i > L_SAUT:
+                    if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
+                        self.rect = self.rect.move(0, y)
+                    else :
+                        toucheMur = 1
+                        
+                self.movement(surrondings)
+                display.display(screen, fond, [0,0], self, blocks)
+                centre = self.getPositionCarreau()
+                surrondings = fichier.getSurrondings(centre[0],centre[1])
+                self.movement(surrondings)
+                i+=rapport_saut
+                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        os._exit(1)
+                        
+            if not toucheMur:
+                i = 0
+                while not toucheMur:
+                    if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
+                        self.rect = self.rect.move(0, y)
+                    else :
+                        toucheMur = 1
+
+                    self.movement(surrondings)
+                    display.display(screen, fond, [0,0], self, blocks)
+                    centre = self.getPositionCarreau()
+                    surrondings = fichier.getSurrondings(centre[0],centre[1])
+                    self.movement(surrondings)
+                    i+=rapport_saut
+                    
 # Class Enemy (entite adverse) herite de 'MySprite'
 class Enemy(MySprite):
     #constructeur
