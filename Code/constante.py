@@ -38,6 +38,11 @@ class Block():
             self.speed[1] = -(self.speed[1])
         self.rect = self.rect.move(self.speed)
 
+    def recupererPositionBloc(self):
+        x = int((self.rect.centerx/taille_block))
+        y = int(self.rect.centery/taille_block)
+        centre = [x,y]    
+
 
 class Block_Mouvement(Block):
         def __init__(self, pos_x, pos_y, image, move_x, move_y, speed):
@@ -47,8 +52,17 @@ class Block_Mouvement(Block):
             self.pos_y_end = pos_y + move_y
 
         def block_move(self):
-            if self.rect.left < self.pos_x or self.rect.right >= self.pos_x_end or self.rect.right > width:
-                self.speed[0] = -(self.speed[0])
-            if self.rect.top < self.pos_y or self.rect.bottom >= self.pos_y_end or self.rect.bottom > height:
-                self.speed[1] = -(self.speed[1])
+            if self.pos_x_end < self.pos_x:
+                if self.rect.right > self.pos_x+taille_block or self.rect.left <= self.pos_x_end or self.rect.left < 0:
+                    self.speed[0] = -(self.speed[0])
+            else:
+                if self.rect.left < self.pos_x or self.rect.right > self.pos_x_end or self.rect.right > width:
+                    self.speed[0] = -(self.speed[0])
+            if self.pos_y_end < self.pos_y:
+                if self.rect.top < self.pos_y_end or self.rect.bottom > self.pos_y+taille_block or self.rect.top < 0:
+                    self.speed[1] = -(self.speed[1])
+            else:
+                if self.rect.top < self.pos_y or self.rect.bottom > self.pos_y_end or self.rect.bottom > height:
+                    self.speed[1] = -(self.speed[1])
+            self.recupererPositionBloc()
             self.rect = self.rect.move(self.speed)

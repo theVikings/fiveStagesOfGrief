@@ -30,12 +30,21 @@ class Blocks_Groupe():
                     block = constante.Block((colonne-1)*constante.taille_block, (ligne-1)*constante.taille_block, "spike.png")
                     self.tableau_blocks.append(block)
 
-                elif id_colonne_case == 'z' or id_colonne_case == 'i':
-
+                elif id_colonne_case == 'z':
                     # Création du carreau -> repositionnment -> affichage
                     block = constante.Block((colonne-1)*constante.taille_block, (ligne-1)*constante.taille_block, "platform.png")
                     self.tableau_blocks.append(block)
+                    
+                elif id_colonne_case == 'i':
+                    # Création du carreau -> repositionnment -> affichage
+                    block = constante.Block_Mouvement((colonne-1)*constante.taille_block, (ligne-1)*constante.taille_block, "platform.png", 200, 0, [4,0])
+                    self.tableau_blocks.append(block)
 
+                elif id_colonne_case == 'u':
+                    # Création du carreau -> repositionnment -> affichage
+                    block = constante.Block_Mouvement((colonne-1)*constante.taille_block, (ligne-1)*constante.taille_block, "platform.png", -160, 0, [4,0])
+                    self.tableau_blocks.append(block)    
+                    
                 elif id_colonne_case == '\n':
 
                     # Création du carreau -> repositionnment -> affichage

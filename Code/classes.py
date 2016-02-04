@@ -142,28 +142,28 @@ class MyHero(MySprite):
                 self.set_image("centre")
 
         def canMoveUp(self,surrondings):
-            listeCaracSpe=['\n','0','E','D']
+            listeCaracSpe=['\n','0','E','D','H','u','i','j']
             if(((surrondings[0][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[0][0]) or ((surrondings[4][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[4][0])) or ((surrondings[5][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[5][0])))):
                return False
             else:
                return True
 
         def canMoveDown(self,surrondings):
-            listeCaracSpe=['\n','0','E','D']
+            listeCaracSpe=['\n','0','E','D','H','u','i','j']
             if(((surrondings[2][1] not in listeCaracSpe)and self.rect.colliderect(surrondings[2][0]))):
                return False
             else:
                return True
 
         def canMoveLeft(self,surrondings):
-            listeCaracSpe=['\n','0','E','D']
+            listeCaracSpe=['\n','0','E','D','H','u','i','j']
             if(((surrondings[1][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[1][0]))):
                return False
             else:
                return True
 
         def canMoveRight(self,surrondings):
-            listeCaracSpe=['\n','0','E','D']
+            listeCaracSpe=['\n','0','E','D','H','u','i','j']
             if(((surrondings[3][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[3][0]))):
                return False
             else:
