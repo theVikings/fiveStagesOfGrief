@@ -1,6 +1,5 @@
 import pygame
 import constante
-import display
 
 def load_image(name):
     image = pygame.image.load(name)
@@ -80,18 +79,14 @@ class MySprite():
     def __init__(self, pos_x, pos_y, image1, image2, image3):
         # Tableau de toutes les images de l'entite
         self.images = []
-        imagesG = []
-        imagesD = []
-        for img in images_bank[0]:
-            imagesG.append(load_image(img))
-        for img in images_bank[1]:
-            imagesD.append(load_image(img))
-        self.images.append(imagesG)
-        self.images.append(imagesD)
+        self.images.append(load_image(image1))
+        self.images.append(load_image(image2))
+        self.images.append(load_image(image3))
         #apparence actuelle de l'entite
-        self.image = self.images[1][0]
+        self.image = self.images[1]
         # position (du rectangle) de l'image
-        self.rect = pygame.Rect(pos_x, pos_y, 35, 21)
+        self.rect = pygame.Rect(pos_x, pos_y, constante.taille_block, constante.taille_block)
+
    	# Retourne la position
     def get_rect(self):
     	return self.rect
@@ -102,14 +97,12 @@ class MySprite():
 
     # modifie l'image actuelle par rapport a la direction souhaite (direction du regard) : "gauche"/"droite"/"centre"
     def set_image(self, cote):
-        imagesG = []
-        imagesD = []
-        for img in images_bank[0]:
-            imagesG.append(load_image(img))
-        for img in images_bank[1]:
-            imagesD.append(load_image(img))
-        self.images.append(imagesG)
-        self.images.append(imagesD)
+        if cote is "droite":
+            self.image = self.images[1]
+        if cote is "gauche":
+            self.image = self.images[2]
+        if cote is "centre":
+            self.image == self.images[0]
 
     def getCentreSprite(self):
         centreX = self.rect.centerx
@@ -150,18 +143,7 @@ class MyHero(MySprite):
             if keys[pygame.K_DOWN] and self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
                 self.set_image("centre")
                 self.rect = self.rect.move(0, 5)
-                
-        #affichage des animation de marchedu hero
-        def anim_marche(self, fenetre, fond, pos,groupe_blocks,sens):
-            if sens == "gauche":
-                for img in self.images[0]:
-                    self.image = img
-                    display.display(fenetre, fond, pos, self, groupe_blocks)
-            if sens == "droite":
-                for img in self.images[1]:
-                    self.image = img
-                    display.display(fenetre, fond, pos, self, groupe_blocks)
-                    
+
         def canMoveUp(self,surrondings):
             listeCaracSpe=['\n','0','E','D']
             if(((surrondings[0][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[0][0]) or ((surrondings[4][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[4][0])) or ((surrondings[5][1] not in listeCaracSpe) and self.rect.colliderect(surrondings[5][0])))):
