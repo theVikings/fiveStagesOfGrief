@@ -215,7 +215,18 @@ class MyHero(MySprite):
                     surrondings = fichier.getSurrondings(centre[0],centre[1])
                     self.movement(surrondings)
                     i+=rapport_saut
+
+
+            def getBlocAtPosPerso(self,lecteurFichier):
+                position = self.getPositionCarreau()
+                blocJoueur = lecteurFichier.recupererBlocPosition(position[0],position[1])
+                return blocJoueur
+
+            def isPersoDying(self,lecteurFichier):
+                if(self.getBlocAtPosPerso(lecteurFichier)=='S' or self.getBlocAtPosPerso(lecteurFichier)=='s'):
+                    os._exit(1)
                     
+                
 # Class Enemy (entite adverse) herite de 'MySprite'
 class Enemy(MySprite):
     #constructeur
