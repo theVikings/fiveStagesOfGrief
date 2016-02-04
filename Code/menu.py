@@ -166,8 +166,11 @@ while continueGeneral:
                     jeuContinue = 0
                 if event.type == QUIT:
                     os._exit(1)
-                if event.type == KEYDOWN and event.key == K_UP:
-                    my_hero.jump(fenetre, fond, groupe_blocks_test, surrondings, my_fichier)
+                if event.type == KEYDOWN:
+                    if event.key == K_UP:
+                        my_hero.jump(fenetre, fond, groupe_blocks_test, surrondings, my_fichier)
+                    elif event.key == K_LCTRL:
+                        my_hero.tirer(fenetre, fond, groupe_blocks_test, surrondings, my_fichier)
             # Mouvement des entités
             centre = my_hero.getPositionCarreau()
             surrondings = my_fichier.getSurrondings(centre[0],centre[1])
