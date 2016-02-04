@@ -155,7 +155,7 @@ while continueGeneral:
         groupe_blocks_test = class_decors.Blocks_Groupe(id)
 
         # Création perso + objets décor
-        fond = pygame.image.load("bgNiveau"+str(arrowPos)+"-"+str(numEcran+1)+".jpg").convert()
+        fond = pygame.image.load("background/01-morning"+str(arrowPos)+"-"+str(numEcran+1)+".png").convert()
         posDepart = my_fichier.retournePositionCaractere('D')
         my_hero = classes.MyHero(posDepart[0], posDepart[1], "data/char_hero/face_hero.png", "data/char_hero/latD_hero.png", "data/char_hero/latG_hero.png")
 
