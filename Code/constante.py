@@ -12,6 +12,9 @@ height = 720
 # Taille d'un block de terrain
 taille_block = 40
 
+#Liste des caracteres speciaux
+listeCaracSpe=['\n','0','E','D','H','u','i','j','x','z','V','S','s']
+
 
 class Block():
     # Constructeur
