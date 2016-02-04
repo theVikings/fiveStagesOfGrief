@@ -157,8 +157,10 @@ while continueGeneral:
         # Création perso + objets décor
         fond = pygame.image.load("background/niveau"+str(arrowPos)+"-"+str(numEcran+1)+".png").convert()
         posDepart = my_fichier.retournePositionCaractere('D')
-        my_hero = classes.MyHero(posDepart[0], posDepart[1], "data/char_hero/face_hero.png", "data/char_hero/latD_hero.png", "data/char_hero/latG_hero.png")
-
+        #declaration du hero
+        images_bank_hero_D = ["data/char_hero/d1.png","data/char_hero/d2.png","data/char_hero/d3.png","data/char_hero/d4.png","data/char_hero/d5.png"]
+        images_bank_hero_G = ["data/char_hero/g1.png","data/char_hero/g2.png","data/char_hero/g3.png","data/char_hero/g4.png","data/char_hero/g5.png"]
+        my_hero = classes.MyHero(posDepart[0], posDepart[1], [images_bank_hero_G,images_bank_hero_D])
         # Boucle de jeu
         while jeuContinue:
             for event in pygame.event.get():
@@ -177,8 +179,8 @@ while continueGeneral:
 
             if my_hero.canMoveDown(surrondings):
                 my_hero.rect = my_hero.rect.move(0, 5)
-                
-            my_hero.movement(surrondings)
+
+            my_hero.movement(surrondings, fenetre, fond, [0,0], groupe_blocks_test)
 
             if(my_hero.isFinDuLevel(nomNiveau)):
                 if(numEcran+1<nombreEcran):
@@ -191,7 +193,7 @@ while continueGeneral:
                     my_fichier = classes.LecteurFichier(nomNiveau)
                     positionHero = my_fichier.retournePositionCaractere('D')
                     test = my_hero.setPosition(positionHero[0],positionHero[1])
-                    
+
             # Affichage de la fenêtre
             display.display(fenetre, fond, [0,0], my_hero, groupe_blocks_test)
 

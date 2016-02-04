@@ -77,16 +77,21 @@ class LecteurFichier:
 # Entités (classe mère)
 class MySprite():
 	# Constructeur
-    def __init__(self, pos_x, pos_y, image1, image2, image3):
+    def __init__(self, pos_x, pos_y, images_bank):
         # Tableau de toutes les images de l'entite
         self.images = []
-        self.images.append(load_image(image1))
-        self.images.append(load_image(image2))
-        self.images.append(load_image(image3))
+        imagesG = []
+        imagesD = []
+        for img in images_bank[0]:
+            imagesG.append(load_image(img))
+        for img in images_bank[1]:
+            imagesD.append(load_image(img))
+        self.images.append(imagesG)
+        self.images.append(imagesD)
         #apparence actuelle de l'entite
-        self.image = self.images[1]
+        self.image = self.images[1][0]
         # position (du rectangle) de l'image
-        self.rect = pygame.Rect(pos_x, pos_y, constante.taille_block, constante.taille_block)
+        self.rect = pygame.Rect(pos_x, pos_y, 21, 35)
 
    	# Retourne la position
     def get_rect(self):
@@ -97,13 +102,15 @@ class MySprite():
     	return self.image
 
     # modifie l'image actuelle par rapport a la direction souhaite (direction du regard) : "gauche"/"droite"/"centre"
-    def set_image(self, cote):
-        if cote is "droite":
-            self.image = self.images[1]
-        if cote is "gauche":
-            self.image = self.images[2]
-        if cote is "centre":
-            self.image == self.images[0]
+    def set_image(self, images_bank):
+        imagesG = []
+        imagesD = []
+        for img in images_bank[0]:
+            imagesG.append(load_image(img))
+        for img in images_bank[1]:
+            imagesD.append(load_image(img))
+        self.images.append(imagesG)
+        self.images.append(imagesD)
 
     def getCentreSprite(self):
         centreX = self.rect.centerx
@@ -146,21 +153,35 @@ class Bullet():
 # Class MyHero (personnage principal) : hérite de MySprite
 class MyHero(MySprite):
     # Constructeur
-    def __init__(self, pos_x, pos_y, image1, image2, image3):
-        MySprite.__init__(self, pos_x, pos_y, image1, image2, image3)
+    def __init__(self, pos_x, pos_y, images_bank):
+            MySprite.__init__(self, pos_x, pos_y, images_bank)
 
     # Gestion du mouvement
-    def movement(self,surrondings):
+    # Gestion du mouvement
+    def movement(self,surrondings, fenetre, fond, pos, groupe_blocks):
         keys = pygame.key.get_pressed()
-       # Teste la touche pressée
+         # Teste la touche pressée
         if keys[pygame.K_LEFT] and self.rect.left > 0 and self.canMoveLeft(surrondings):
-            self.set_image("gauche")
+            self.anim_marche(fenetre, fond, pos, groupe_blocks,"gauche")
             self.rect = self.rect.move(-5, 0)
         if keys[pygame.K_RIGHT] and self.rect.right < constante.width+5 and self.canMoveRight(surrondings):
-            self.set_image("droite")
+            self.anim_marche(fenetre, fond, pos, groupe_blocks,"droite")
             self.rect = self.rect.move(5, 0)
         if keys[pygame.K_UP] and self.rect.top > 0 and self.canMoveUp(surrondings):
-            self.set_image("centre")
+            self.rect = self.rect.move(0, -5)
+        if keys[pygame.K_DOWN] and self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
+            self.rect = self.rect.move(0, 5)
+
+    #affichage des animation de marchedu hero
+    def anim_marche(self, fenetre, fond, pos,groupe_blocks,sens):
+        if sens == "gauche":
+            for img in self.images[0]:
+                self.image = img
+                display.display(fenetre, fond, pos, self, groupe_blocks)
+        if sens == "droite":
+            for img in self.images[1]:
+                self.image = img
+                display.display(fenetre, fond, pos, self, groupe_blocks)
 
     def canMoveUp(self,surrondings):
         if(((surrondings[0][1] not in constante.listeCaracSpe) and self.rect.colliderect(surrondings[0][0]) or ((surrondings[4][1] not in constante.listeCaracSpe) and self.rect.colliderect(surrondings[4][0])) or ((surrondings[5][1] not in constante.listeCaracSpe) and self.rect.colliderect(surrondings[5][0])))):
@@ -193,49 +214,47 @@ class MyHero(MySprite):
         return (blocJoueur == 'E')
 
     def jump(self, screen, fond, blocks, surrondings, fichier):
-        L_SAUT = 60 #Longeur du saut en pixels
-        i = 1
-        rapport_saut = 8
-        y = 112/rapport_saut
-        toucheMur = 0
+            L_SAUT = 60 #Longeur du saut en pixels
+            i = 1
+            rapport_saut = 8
+            y = 112/rapport_saut
+            toucheMur = 0
 
-        while i < L_SAUT*2 + 1 and not toucheMur:   
-            if i <= L_SAUT:
-                if self.rect.top > 0 and self.canMoveUp(surrondings):
-                    self.rect = self.rect.move(0, -y)
-                else :
-                    self.rect = self.rect.move(0, y)
-            elif i > L_SAUT:
-                if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
-                    self.rect = self.rect.move(0, y)
-                else :
-                    toucheMur = 1
-                    
-            self.movement(surrondings)
-            display.display(screen, fond, [0,0], self, blocks)
-            centre = self.getPositionCarreau()
-            surrondings = fichier.getSurrondings(centre[0],centre[1])
-            self.movement(surrondings)
-            i+=rapport_saut
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    os._exit(1)
-                    
-        if not toucheMur:
-            i = 0
-            while not toucheMur:
-                if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
-                    self.rect = self.rect.move(0, y)
-                else :
-                    toucheMur = 1
+            while i < L_SAUT*2 + 1 and not toucheMur:
+                if i <= L_SAUT:
+                    if self.rect.top > 0 and self.canMoveUp(surrondings):
+                        self.rect = self.rect.move(0, -y)
+                    else :
+                        self.rect = self.rect.move(0, y)
+                elif i > L_SAUT:
+                    if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
+                        self.rect = self.rect.move(0, y)
+                    else :
+                        toucheMur = 1
 
-                self.movement(surrondings)
-                display.display(screen, fond, [0,0], self, blocks)
+                self.movement(surrondings, screen, fond, [0,0], blocks)
                 centre = self.getPositionCarreau()
                 surrondings = fichier.getSurrondings(centre[0],centre[1])
-                self.movement(surrondings)
+                self.movement(surrondings, screen, fond, [0,0], blocks)
                 i+=rapport_saut
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        os._exit(1)
+
+            if not toucheMur:
+                i = 0
+                while not toucheMur:
+                    if self.rect.bottom < constante.height+5 and self.canMoveDown(surrondings):
+                        self.rect = self.rect.move(0, y)
+                    else :
+                        toucheMur = 1
+
+                    self.movement(surrondings, screen, fond, [0,0], blocks)
+                    centre = self.getPositionCarreau()
+                    surrondings = fichier.getSurrondings(centre[0],centre[1])
+                    self.movement(surrondings, screen, fond, [0,0], blocks)
+                    i+=rapport_saut
 
 
     def getBlocAtPosPerso(self,lecteurFichier):
@@ -264,7 +283,7 @@ class MyHero(MySprite):
                         os._exit(1)
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
                         self.jump(screen, fond, blocks, surrondings, fichier)
-                
+
 # Class Enemy (entite adverse) herite de 'MySprite'
 class Enemy(MySprite):
     #constructeur
